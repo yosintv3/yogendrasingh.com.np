@@ -1,0 +1,110 @@
+<html lang="en">
+<head>
+<meta charset="UTF-8"></meta>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"></meta>
+<title>YouTube Thumbnail Downloader</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 20px;
+  }
+  input[type="text"] {
+    width: 80%;
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  img {
+    max-width: 100%;
+    margin-top: 20px;
+    cursor: pointer;
+  }
+  select {
+    padding: 10px;
+    font-size: 16px;
+  }
+</style>
+</head>
+<body>
+  <h1>YouTube Thumbnail Downloader</h1>
+  <input id="videoUrl" placeholder="Enter YouTube Video URL" type="text" />
+  <button onclick="downloadThumbnail()">Download Thumbnail</button>
+  <select id="quality">
+    <option value="default">Default (High)</option>
+    <option value="maxres">Max Resolution</option>
+    <option value="high">High Quality</option>
+    <option value="medium">Medium Quality</option>
+    <option value="low">Low Quality</option>
+  </select>
+  <button id="saveBtn" style="display: none;">Save Image</button>
+  <div id="thumbnailContainer"></div>
+
+  <script>
+    function downloadThumbnail() {
+      var videoUrl = document.getElementById("videoUrl").value;
+      var videoId = extractVideoId(videoUrl);
+      if (!videoId) {
+        alert("Invalid YouTube video URL");
+        return;
+      }
+
+      var quality = document.getElementById("quality").value;
+      var thumbnailUrl = getThumbnailUrl(videoId, quality);
+
+      var thumbnailContainer = document.getElementById("thumbnailContainer");
+      thumbnailContainer.innerHTML = '<img id="thumbnailImg" src="' + thumbnailUrl + '" alt="Thumbnail">';
+
+      var saveBtn = document.getElementById("saveBtn");
+      saveBtn.style.display = "block";
+      saveBtn.onclick = function() {
+        downloadImage(thumbnailUrl);
+      };
+    }
+
+    function extractVideoId(url) {
+      var regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+      var match = url.match(regExp);
+      if (match && match[2].length === 11) {
+        return match[2];
+      } else {
+        return null;
+      }
+    }
+
+    function getThumbnailUrl(videoId, quality) {
+      var baseUrl = "https://img.youtube.com/vi/" + videoId + "/";
+      switch (quality) {
+        case "maxres":
+          return baseUrl + "maxresdefault.jpg";
+        case "high":
+          return baseUrl + "hqdefault.jpg";
+        case "medium":
+          return baseUrl + "mqdefault.jpg";
+        case "low":
+          return baseUrl + "default.jpg";
+        default:
+          return baseUrl + "maxresdefault.jpg";
+      }
+    }
+
+    function downloadImage(imageUrl) {
+      var link = document.createElement('a');
+      link.href = imageUrl;
+      link.setAttribute('download', 'thumbnail.jpg');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  </script>
+</body>
+</html>
