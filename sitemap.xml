@@ -1,6 +1,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+<!--
 <url>
-<loc> https://tool.singhyogendra.com.np/tools/yt-thumbnail-downloader.html </loc>
+<loc>_____</loc>
+</url>
+-->
+  
+<url>
+<loc>https://tool.singhyogendra.com.np/tools/yt-thumbnail-downloader.html</loc>
 </url>
 
 </urlset>
