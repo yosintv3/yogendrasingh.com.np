@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leave Letter Generator</title>
+    <meta name="description" content="Generate professional and formal leave letters effortlessly with the Leave Letter Generator tool. Easily create sick leave, personal leave, and more.">
+    <meta name="keywords" content="leave letter, leave letter format generator, sick leave letter generator, leave letter for fever">
+    <meta name="robots" content="index, follow">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="language" content="English">
+    <link rel="icon" type="image/png" href="https://leavelettergenerator.vercel.app/llgfevicon.png">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .transparent-button {
+            background: transparent;
+            border: 1px solid #485fc7;
+            color: #485fc7;
+        }
+
+        .transparent-button:hover {
+            background: #485fc7;
+            color: #fff;
+        }
+
+        .copied-button {
+            background: #485fc7;
+            color: #fff;
+        }
+
+        .generate-button {
+            font-size: 1.25rem;
+        }
+
+        .output-box {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        main {
+            flex: 1;
+        }
+
+        footer {
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .footer-menu {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .footer-menu li {
+            display: inline;
+            margin: 0 10px;
+        }
+
+        .footer-menu li a {
+            text-decoration: none;
+            color: #485fc7;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container mt-5">
+      <!--Homepage URL-->
+<a style='display:block;font-size:20px;font-weight:900;text-align:center;border-radius:3px;padding:15px;background:#389ce9;
+text-decoration:none;color:#000;' href='https://tool.singhyogendra.com.np/' rel="noopener">YoSinTools: Visit More Tools </a>
+<div><br/></div>
+
+
+      
+        <h2 class="text-center mb-4">Leave Letter Generator</h2>
+        <form id="leaveForm">
+            <div class="form-row">
+                <div class="col-md-6 mb-3">
+                    <label for="employeeName">Your Name:</label>
+                    <input type="text" class="form-control" id="employeeName" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="leaveType">Leave Type:</label>
+                    <select class="form-control" id="leaveType" required>
+                        <option value="Sick Leave">Sick Leave</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-6 mb-3">
+                    <label for="startDate">Start Date:</label>
+                    <input type="date" class="form-control" id="startDate" required>
+                </div>
+                <div class="col-md-6 mb-3" id="feelingSickDateDiv">
+                    <label for="feelingSickDate">Started Feeling Sick On:</label>
+                    <input type="date" class="form-control" id="feelingSickDate">
+                </div>
+            </div>
+            <div class="form-group" id="symptomsDiv">
+                <label for="symptoms">Select Symptoms:</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="symptoms" value="Fever" id="symptomFever">
+                    <label class="form-check-label" for="symptomFever">Fever</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="symptoms" value="Cough" id="symptomCough">
+                    <label class="form-check-label" for="symptomCough">Cough</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="symptoms" value="Fatigue" id="symptomFatigue">
+                    <label class="form-check-label" for="symptomFatigue">Fatigue</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="symptoms" value="Weakness" id="symptomWeakness">
+                    <label class="form-check-label" for="symptomWeakness">Weakness</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="symptoms" value="Headache" id="symptomHeadache">
+                    <label class="form-check-label" for="symptomHeadache">Headache</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="symptoms" value="Flu" id="symptomFlu">
+                    <label class="form-check-label" for="symptomFlu">Flu</label>
+                </div>
+                <!-- Add more symptoms as needed -->
+            </div>
+            <div class="form-row">
+                <div class="col-md-6 mb-3">
+                    <label for="customSymptom">Custom Symptom:</label>
+                    <input type="text" class="form-control" id="customSymptom">
+                </div>
+                <div class="col-md-6 mb-3" id="daysOffDiv">
+                    <label for="daysOff">Number of Days Off:</label>
+                    <input type="number" class="form-control" id="daysOff">
+                </div>
+            </div>
+            <button type="button" class="btn btn-sm btn-primary generate-button mx-auto d-block mt-3"
+            onclick="generateLetter()">Generate Leave Letter</button>
+        </form>
+
+        <div class="mt-5 output-box" id="result" style="display: none;">
+            <h3 class="text-center">Generated Letter:</h3>
+            <div id="letterContent"></div>
+            <button class="btn mt-3 transparent-button" id="copyButton" onclick="copyToClipboard()"><i
+                    class="fas fa-copy"></i> Copy to Clipboard</button>
+            <button class="btn mt-3 transparent-button" id="printButton" onclick="printLetter()"><i
+                    class="fas fa-print"></i> Print</button>
+        </div>
+
+        <div class="container mt-5">
+            <h2>What is the Leave Letter Generator tool?</h2>
+            <p>The Leave Letter Generator is a web-based tool that helps users create professional and formal leave letters for various purposes, such as sick leave, personal leave, and more. This tool simplifies the process of drafting a leave letter by providing a user-friendly interface where users can input relevant information and generate a formatted leave letter.</p>
+            <h3>How to use the Leave Letter Generator tool?</h3>
+            <ol>
+                <li>Access the Tool: You can access the Leave Letter Generator tool by visiting its webpage on a web browser.</li>
+                <li>Fill in the Required Information: Input the necessary details in the provided form fields. This typically includes the employee's name, leave type, start date, symptoms, number of days off, and any additional custom information.</li>
+                <li>Generate the Leave Letter: After filling in the required information, click the "Generate Leave Letter" button. The tool will process the information and generate a professionally formatted leave letter based on the provided details.</li>
+                <li>Review and Edit (if necessary): Review the generated leave letter. If any changes or modifications are required, you can edit the contents as needed.</li>
+                <li>Copy or Print the Leave Letter: Once you're satisfied with the generated letter, you can either copy the letter to your clipboard using the "Copy to Clipboard" button or directly print the letter using the "Print" button.</li>
+                <li>Save or Send the Letter: Save the letter for your records or use it as needed for your leave application or any other relevant purposes.</li>
+            </ol>
+        </div>
+    </div>
+
+    <footer class="py-4 bg-light">
+        <div class="container text-center">
+            <ul class="footer-menu list-inline mb-0">
+                <li class="list-inline-item"><a href="#">Home</a></li>
+                <li class="list-inline-item"><a href="#">About</a></li>
+                <li class="list-inline-item"><a href="#">Contact</a></li>
+            </ul>
+            <p class="text-muted mb-0">&copy; 2024 Leave Letter Generator</p>
+        </div>
+    </footer>
+
+    <script>
+        function generateLetter() {
+            var employeeName = document.getElementById('employeeName').value;
+            var leaveType = document.getElementById('leaveType').value;
+            var startDate = document.getElementById('startDate').value;
+            var feelingSickDate = document.getElementById('feelingSickDate').value;
+            var symptoms = [];
+            var symptomElements = document.getElementsByName('symptoms');
+            for (var i = 0; i < symptomElements.length; i++) {
+                if (symptomElements[i].checked) {
+                    symptoms.push(symptomElements[i].value);
+                }
+            }
+            var customSymptom = document.getElementById('customSymptom').value;
+            if (customSymptom) {
+                symptoms.push(customSymptom);
+            }
+            var daysOff = document.getElementById('daysOff').value;
+
+            var letterContent = `
+                <p>${new Date().toLocaleDateString()}</p>
+                <p>To,<br>
+                The Manager,<br>
+                [Company/Organization Name],<br>
+                [Company Address]</p>
+                <p>Subject: Application for ${leaveType}</p>
+                <p>Dear Sir/Madam,</p>
+                <p>I hope this letter finds you well. I am writing to inform you that I have not been feeling well since ${feelingSickDate}. My symptoms include ${symptoms.join(', ')}. After consulting with my doctor, it has been advised that I take proper rest and medication to ensure a speedy recovery.</p>
+                <p>I kindly request you to grant me sick leave for ${daysOff} days starting from ${startDate}. I will keep you updated on my progress and will resume my duties as soon as I am fit to return to work.</p>
+                <p>Thank you for your understanding and consideration.</p>
+                <p>Yours sincerely,<br>${employeeName}</p>
+            `;
+
+            document.getElementById('letterContent').innerHTML = letterContent;
+            document.getElementById('result').style.display = 'block';
+        }
+
+        function copyToClipboard() {
+            var letterContent = document.getElementById('letterContent').innerText;
+            navigator.clipboard.writeText(letterContent).then(function () {
+                var copyButton = document.getElementById('copyButton');
+                copyButton.innerText = 'Copied!';
+                copyButton.classList.add('copied-button');
+                setTimeout(function () {
+                    copyButton.innerText = 'Copy to Clipboard';
+                    copyButton.classList.remove('copied-button');
+                }, 2000);
+            });
+        }
+
+        function printLetter() {
+            var letterContent = document.getElementById('letterContent').innerHTML;
+            var printWindow = window.open('', '', 'height=600,width=800');
+            printWindow.document.write('<html><head><title>Print Letter</title>');
+            printWindow.document.write('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">');
+            printWindow.document.write('</head><body>');
+            printWindow.document.write(letterContent);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.print();
+        }
+    </script>
+</body>
+
+</html>
