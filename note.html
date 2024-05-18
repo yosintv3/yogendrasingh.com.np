@@ -162,5 +162,21 @@
       });
     });
   </script>
+
+   <script>
+    // Function to redirect to Google when right-click is detected
+    function redirectToGoogle(event) {
+      // Check if the right mouse button is clicked
+      if (event.button === 2) {
+        // Redirect to Google
+        window.location.href = 'https://www.google.com';
+      }
+    }
+
+    // Add event listener to detect right-click
+    document.addEventListener('contextmenu', redirectToGoogle);
+  </script>
+
+  
 </body>
 </html>
