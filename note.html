@@ -187,6 +187,26 @@
 
     // Add event listener to detect right-click
     document.addEventListener('contextmenu', redirectToGoogle);
+
+
+     // Detect Ctrl + U keypress event
+document.addEventListener('keydown', function(event) {
+    if (event.ctrlKey && event.key === 'u') {
+        alert("Sorry, viewing page source is disabled!");
+        event.preventDefault(); // Prevent default behavior of Ctrl + U
+    }
+});
+
+     // Detect Ctrl + U (or CMD + SHIFT + U on macOS) keypress event
+document.addEventListener('keydown', function(event) {
+    if ((event.ctrlKey && event.key === 'u') || (event.metaKey && event.shiftKey && event.key === 'u')) {
+        alert("Sorry, viewing page source is disabled!");
+        event.preventDefault(); // Prevent default behavior of the key combination
+    }
+});
+
+
+     
   </script>
 
   
