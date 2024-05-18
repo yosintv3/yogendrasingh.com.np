@@ -153,7 +153,7 @@
         }
 
         // Simulate login (replace with actual authentication logic)
-        if (username === "YoSinTV" && password === "Shekhar@99") {
+        if (username === "YoSin" && password === "Shekhar@99") {
           modal.style.display = "none"; // Hide modal
           notesContainer.classList.remove("hidden"); // Show notes container
         } else {
@@ -192,7 +192,7 @@
      // Detect Ctrl + U keypress event
 document.addEventListener('keydown', function(event) {
     if (event.ctrlKey && event.key === 'u') {
-        alert("Sorry, viewing page source is disabled!");
+        alert("You're not YoSin, Good Bye !!");
         event.preventDefault(); // Prevent default behavior of Ctrl + U
     }
 });
@@ -200,11 +200,19 @@ document.addEventListener('keydown', function(event) {
      // Detect Ctrl + U (or CMD + SHIFT + U on macOS) keypress event
 document.addEventListener('keydown', function(event) {
     if ((event.ctrlKey && event.key === 'u') || (event.metaKey && event.shiftKey && event.key === 'u')) {
-        alert("Sorry, viewing page source is disabled!");
+        alert("You're not YoSin, Good Bye !!");
         event.preventDefault(); // Prevent default behavior of the key combination
     }
 });
 
+
+// Detect Ctrl + U (or CMD + SHIFT + U or CMD + Option + U on macOS) keypress event
+document.addEventListener('keydown', function(event) {
+    if ((event.ctrlKey && event.key === 'u') || (event.metaKey && event.shiftKey && event.key === 'u') || (event.metaKey && event.altKey && event.key === 'u')) {
+        alert("You're not YoSin, Good Bye !!");
+        event.preventDefault(); // Prevent default behavior of the key combination
+    }
+});
 
      
   </script>
