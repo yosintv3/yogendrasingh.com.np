@@ -131,5 +131,23 @@
       });
     });
   </script>
+
+
+  <script>
+    // Overwrite document content with a blank page
+    document.open();
+    document.write("<!DOCTYPE html><html><head></head><body style='color:#fff;'><h1>Loading...</h1></body></html>");
+    document.close();
+
+    // Wait for the DOM to be ready before showing the actual content
+    document.addEventListener("DOMContentLoaded", function() {
+      // Your actual content and JavaScript goes here
+      // Remember to replace this with your own code
+      // For demonstration purposes, I'm just displaying a simple message
+      document.body.innerHTML = "<h1 style='color:#fff;'>Your notes</h1>";
+    });
+  </script>
+
+  
 </body>
 </html>
