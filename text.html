@@ -12,16 +12,17 @@
             background: #121212;
             color: white;
             padding: 20px;
+            transition: background 0.3s, color 0.3s;
         }
         textarea {
             width: 100%;
-            height: 500px;
+            min-height: 500px; /* Ensures the textarea has a reasonable starting height */
             padding: 10px;
             font-size: 16px;
             border: none;
             background: #333;
             color: white;
-            resize: none;
+            resize: vertical; /* Allows vertical resizing */
             margin-top: 20px;
         }
         #successMessage {
@@ -30,19 +31,52 @@
             color: #28a745; /* Green color for success */
             font-weight: bold;
         }
+
+        /* Dark mode toggle button style */
+        #darkModeToggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #444;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.3s;
+        }
+
+        /* Light mode styling */
+        .light-mode {
+            background: white;
+            color: black;
+        }
+        .light-mode textarea {
+            background: #f4f4f4;
+            color: black;
+        }
     </style>
-<link rel="me" href="https://www.blogger.com/profile/12720910313934831026" />
-<meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109'/>
-<meta name='google-adsense-platform-domain' content='blogspot.com'/>
+    <link rel="me" href="https://www.blogger.com/profile/12720910313934831026" />
+    <meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109'/>
+    <meta name='google-adsense-platform-domain' content='blogspot.com'/>
 </head>
 <body>
 
     <div class="container">
         <h1 class="text-center">🔥 YoSin Text Editor</h1>
-            <button id="saveButton" class="btn btn-primary btn-block">Save Text</button>
-            <div id="successMessage">Text saved successfully!</div>
+        <button id="saveButton" class="btn btn-primary btn-block">Save Text</button>
+        <div id="successMessage">Text saved successfully!</div>
         <textarea id="editor" placeholder="Start typing..."></textarea>
     </div>
+
+    <!-- Dark Mode Toggle Button -->
+    <button id="darkModeToggle">🌙</button>
 
     <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -56,12 +90,12 @@
 
         // Firebase Config - replace with your own configuration
         const firebaseConfig = {
-    apiKey: "AIzaSyBIYar0cLgLpgx5W8e-iKfrQ2lwfwP6WAA",
-    authDomain: "editorrrrrr-598d3.firebaseapp.com",
-    projectId: "editorrrrrr-598d3",
-    storageBucket: "editorrrrrr-598d3.firebasestorage.app",
-    messagingSenderId: "531209330453",
-    appId: "1:531209330453:web:adde8903cf62a844a2531c"
+            apiKey: "AIzaSyBIYar0cLgLpgx5W8e-iKfrQ2lwfwP6WAA",
+            authDomain: "editorrrrrr-598d3.firebaseapp.com",
+            projectId: "editorrrrrr-598d3",
+            storageBucket: "editorrrrrr-598d3.firebasestorage.app",
+            messagingSenderId: "531209330453",
+            appId: "1:531209330453:web:adde8903cf62a844a2531c"
         };
         
         // Initialize Firebase
@@ -104,6 +138,13 @@
             } catch (error) {
                 console.error("Error saving document: ", error);
             }
+        });
+
+        // Toggle Dark/Light Mode
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        darkModeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            darkModeToggle.textContent = document.body.classList.contains('light-mode') ? '🌞' : '🌙';
         });
     </script>
 </body>
