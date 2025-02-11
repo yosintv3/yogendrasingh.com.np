@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Expenses & Income Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module">
+        // Import Firebase SDK
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+        
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyBEKyWXUg36To9TQH_ryvMGG8vWjQOgBks",
+  authDomain: "texteditor-9aaec.firebaseapp.com",
+  projectId: "texteditor-9aaec",
+  storageBucket: "texteditor-9aaec.firebasestorage.app",
+  messagingSenderId: "573168375129",
+  appId: "1:573168375129:web:f26d4e3141ce901bba6848",
+  measurementId: "G-3P777H4YTC"
+};
+        
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        
+        async function addTransaction(type) {
+            const amount = parseFloat(document.getElementById('amount').value);
+            const reason = document.getElementById('reason').value || 'No reason';
+            if (isNaN(amount) || amount <= 0) return;
+            
+            const date = new Date().toLocaleDateString();
+            await addDoc(collection(db, "transactions"), { amount, type, reason, date });
+            document.getElementById('amount').value = '';
+            document.getElementById('reason').value = '';
+            updateUI();
+        }
+        
+        async function updateUI() {
+            const transactionsList = document.getElementById('transactions');
+            transactionsList.innerHTML = '';
+            
+            let totalIncome = 0, totalExpenses = 0;
+            let groupedTransactions = {};
+            
+            const querySnapshot = await getDocs(collection(db, "transactions"));
+            querySnapshot.forEach((doc) => {
+                const { amount, type, reason, date } = doc.data();
+                if (type === 'income') totalIncome += amount;
+                else totalExpenses += amount;
+                
+                if (!groupedTransactions[date]) groupedTransactions[date] = [];
+                groupedTransactions[date].push({ amount, type, reason, id: doc.id });
+            });
+            
+            Object.keys(groupedTransactions).forEach(date => {
+                const dateHeader = document.createElement('li');
+                dateHeader.className = "text-center font-bold mt-2";
+                dateHeader.textContent = date;
+                transactionsList.appendChild(dateHeader);
+                
+                const transactionsLine = document.createElement('li');
+                transactionsLine.className = "p-2 rounded bg-gray-200";
+                transactionsLine.innerHTML = groupedTransactions[date].map(({ amount, type, reason, id }) => 
+                    `<span class="${type === 'income' ? 'text-green-600' : 'text-red-600'}">${reason}: ${amount}</span> <button onclick="removeTransaction('${id}')" class="text-red-600">&times;</button>`
+                ).join(' | ');
+                transactionsList.appendChild(transactionsLine);
+            });
+            
+            document.getElementById('total-income').textContent = totalIncome;
+            document.getElementById('total-expenses').textContent = totalExpenses;
+        }
+        
+        async function removeTransaction(id) {
+            await deleteDoc(doc(db, "transactions", id));
+            updateUI();
+        }
+        
+        window.addTransaction = addTransaction;
+        window.removeTransaction = removeTransaction;
+        updateUI();
+    </script>
+</head>
+<body class="bg-gray-100 p-6">
+    <div class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-2xl font-bold text-center mb-4">Daily Expenses & Income</h2>
+        <div class="mb-4 flex justify-between">
+            <p class="text-lg font-semibold">Total Income: <span id="total-income" class="text-green-600">0</span></p>
+            <p class="text-lg font-semibold">Total Expenses: <span id="total-expenses" class="text-red-600">0</span></p>
+        </div>
+        
+        <input type="number" id="amount" class="w-full p-2 border rounded mb-2" placeholder="Enter amount">
+        <input type="text" id="reason" class="w-full p-2 border rounded mb-2" placeholder="Reason (optional)">
+        <div class="flex gap-2">
+            <button onclick="addTransaction('income')" class="w-1/2 bg-green-500 text-white p-2 rounded">Add Income</button>
+            <button onclick="addTransaction('expense')" class="w-1/2 bg-red-500 text-white p-2 rounded">Add Expense</button>
+        </div>
+        
+        <ul id="transactions" class="mt-4 space-y-2"></ul>
+    </div>
+</body>
+</html>
