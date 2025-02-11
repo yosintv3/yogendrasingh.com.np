@@ -67,9 +67,11 @@
                 
                 groupedTransactions[date].forEach(({ amount, type, reason, id }) => {
                     const transactionLine = document.createElement('li');
-                    transactionLine.className = "p-2 rounded bg-gray-200 flex justify-between";
+                    const bgColor = type === 'income' ? 'bg-green-500' : 'bg-red-500';  // Different background colors for income and expenses
+                    const textColor = type === 'income' ? 'text-black-600' : 'text-black-600';  // Different text colors for income and expenses
+                    transactionLine.className = `p-2 rounded ${bgColor} flex justify-between`;
                     transactionLine.innerHTML = `
-                        <span class="font-bold ${type === 'income' ? 'text-green-600' : 'text-red-600'}">¥${amount.toLocaleString()}</span>
+                        <span class="font-bold ${textColor}">¥${amount.toLocaleString()}</span>
                         <span class="text-gray-800">${reason}</span>
                         <button onclick="removeTransaction('${id}')" class="text-red-600">&times;</button>
                     `;
@@ -88,9 +90,11 @@
                 
                 monthlyTransactions[monthYear].forEach(({ amount, type, reason, id }) => {
                     const transactionLine = document.createElement('li');
-                    transactionLine.className = "p-2 rounded bg-gray-200 flex justify-between";
+                    const bgColor = type === 'income' ? 'bg-green-500' : 'bg-red-500';  // Different background colors for income and expenses
+                    const textColor = type === 'income' ? 'text-black-600' : 'text-black-600';  // Different text colors for income and expenses
+                    transactionLine.className = `p-2 rounded ${bgColor} flex justify-between`;
                     transactionLine.innerHTML = `
-                        <span class="font-bold ${type === 'income' ? 'text-green-600' : 'text-red-600'}">¥${amount.toLocaleString()}</span>
+                        <span class="font-bold ${textColor}">¥${amount.toLocaleString()}</span>
                         <span class="text-gray-800">${reason}</span>
                         <button onclick="removeTransaction('${id}')" class="text-red-600">&times;</button>
                     `;
