@@ -10,17 +10,16 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
         import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
         
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyBEKyWXUg36To9TQH_ryvMGG8vWjQOgBks",
-  authDomain: "texteditor-9aaec.firebaseapp.com",
-  projectId: "texteditor-9aaec",
-  storageBucket: "texteditor-9aaec.firebasestorage.app",
-  messagingSenderId: "573168375129",
-  appId: "1:573168375129:web:f26d4e3141ce901bba6848",
-  measurementId: "G-3P777H4YTC"
-};
-        
+        const firebaseConfig = {
+            apiKey: "AIzaSyBEKyWXUg36To9TQH_ryvMGG8vWjQOgBks",
+            authDomain: "texteditor-9aaec.firebaseapp.com",
+            projectId: "texteditor-9aaec",
+            storageBucket: "texteditor-9aaec.firebasestorage.app",
+            messagingSenderId: "573168375129",
+            appId: "1:573168375129:web:f26d4e3141ce901bba6848",
+            measurementId: "G-3P777H4YTC"
+        };
+
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
@@ -43,33 +42,64 @@ const firebaseConfig = {
             
             let totalIncome = 0, totalExpenses = 0;
             let groupedTransactions = {};
+            let monthlyTransactions = {};
             
             const querySnapshot = await getDocs(collection(db, "transactions"));
             querySnapshot.forEach((doc) => {
                 const { amount, type, reason, date } = doc.data();
+                const monthYear = new Date(date).toLocaleString('default', { year: 'numeric', month: 'long' }); // Group by month and year
                 if (type === 'income') totalIncome += amount;
                 else totalExpenses += amount;
                 
                 if (!groupedTransactions[date]) groupedTransactions[date] = [];
                 groupedTransactions[date].push({ amount, type, reason, id: doc.id });
+                
+                if (!monthlyTransactions[monthYear]) monthlyTransactions[monthYear] = [];
+                monthlyTransactions[monthYear].push({ amount, type, reason, date, id: doc.id });
             });
             
+            // Show daily transactions
             Object.keys(groupedTransactions).forEach(date => {
                 const dateHeader = document.createElement('li');
                 dateHeader.className = "text-center font-bold mt-2";
                 dateHeader.textContent = date;
                 transactionsList.appendChild(dateHeader);
                 
-                const transactionsLine = document.createElement('li');
-                transactionsLine.className = "p-2 rounded bg-gray-200";
-                transactionsLine.innerHTML = groupedTransactions[date].map(({ amount, type, reason, id }) => 
-                    `<span class="${type === 'income' ? 'text-green-600' : 'text-red-600'}">${reason}: ${amount}</span> <button onclick="removeTransaction('${id}')" class="text-red-600">&times;</button>`
-                ).join(' | ');
-                transactionsList.appendChild(transactionsLine);
+                groupedTransactions[date].forEach(({ amount, type, reason, id }) => {
+                    const transactionLine = document.createElement('li');
+                    transactionLine.className = "p-2 rounded bg-gray-200 flex justify-between";
+                    transactionLine.innerHTML = `
+                        <span class="font-bold ${type === 'income' ? 'text-green-600' : 'text-red-600'}">¥${amount.toLocaleString()}</span>
+                        <span class="text-gray-800">${reason}</span>
+                        <button onclick="removeTransaction('${id}')" class="text-red-600">&times;</button>
+                    `;
+                    transactionsList.appendChild(transactionLine);
+                });
             });
             
-            document.getElementById('total-income').textContent = totalIncome;
-            document.getElementById('total-expenses').textContent = totalExpenses;
+            // Show monthly transactions
+            const monthlyList = document.getElementById('monthly-transactions');
+            monthlyList.innerHTML = ''; // Clear previous monthly data
+            Object.keys(monthlyTransactions).forEach(monthYear => {
+                const monthYearHeader = document.createElement('li');
+                monthYearHeader.className = "text-center font-bold mt-4";
+                monthYearHeader.textContent = monthYear;
+                monthlyList.appendChild(monthYearHeader);
+                
+                monthlyTransactions[monthYear].forEach(({ amount, type, reason, id }) => {
+                    const transactionLine = document.createElement('li');
+                    transactionLine.className = "p-2 rounded bg-gray-200 flex justify-between";
+                    transactionLine.innerHTML = `
+                        <span class="font-bold ${type === 'income' ? 'text-green-600' : 'text-red-600'}">¥${amount.toLocaleString()}</span>
+                        <span class="text-gray-800">${reason}</span>
+                        <button onclick="removeTransaction('${id}')" class="text-red-600">&times;</button>
+                    `;
+                    monthlyList.appendChild(transactionLine);
+                });
+            });
+            
+            document.getElementById('total-income').textContent = `¥${totalIncome.toLocaleString()}`;
+            document.getElementById('total-expenses').textContent = `¥${totalExpenses.toLocaleString()}`;
         }
         
         async function removeTransaction(id) {
@@ -86,8 +116,8 @@ const firebaseConfig = {
     <div class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
         <h2 class="text-2xl font-bold text-center mb-4">Daily Expenses & Income</h2>
         <div class="mb-4 flex justify-between">
-            <p class="text-lg font-semibold">Total Income: <span id="total-income" class="text-green-600">0</span></p>
-            <p class="text-lg font-semibold">Total Expenses: <span id="total-expenses" class="text-red-600">0</span></p>
+            <p class="text-lg font-semibold">Total Income: <span id="total-income" class="text-green-600">¥0</span></p>
+            <p class="text-lg font-semibold">Total Expenses: <span id="total-expenses" class="text-red-600">¥0</span></p>
         </div>
         
         <input type="number" id="amount" class="w-full p-2 border rounded mb-2" placeholder="Enter amount">
@@ -98,6 +128,8 @@ const firebaseConfig = {
         </div>
         
         <ul id="transactions" class="mt-4 space-y-2"></ul>
+        
+        <ul id="monthly-transactions" class="mt-2 space-y-2"></ul>
     </div>
 </body>
 </html>
