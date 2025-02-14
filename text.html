@@ -5,32 +5,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YoSin Text Editor</title>
     <!-- Bootstrap CSS -->
-  <link rel="icon" href="https://textdoc.co/images/favicon.svg" sizes="any" type="image/svg+xml">
+    <link rel="icon" href="https://textdoc.co/images/favicon.svg" sizes="any" type="image/svg+xml">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     
     <style>
         body {
-            background: #121212;
-            color: white;
+            background: #1e1e1e;
+            color: #e0e0e0;
             padding: 20px;
             transition: background 0.3s, color 0.3s;
+            font-family: 'Arial', sans-serif;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #ff6f61;
         }
         textarea {
             width: 100%;
-            min-height: 500px; /* Ensures the textarea has a reasonable starting height */
-            padding: 10px;
+            min-height: 500px;
+            padding: 15px;
             font-size: 16px;
             border: none;
-            background: #333;
-            color: white;
-            resize: vertical; /* Allows vertical resizing */
+            background: #2d2d2d;
+            color: #e0e0e0;
+            resize: vertical;
             margin-top: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        #saveButton {
+            background-color: #ff6f61;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+        }
+        #saveButton:hover {
+            background-color: #ff3b2f;
         }
         #successMessage {
             display: none;
             margin-top: 10px;
             align-items: center;
-            color: #28a745; /* Green color for success */
+            color: #28a745;
             font-weight: bold;
         }
 
@@ -56,12 +81,22 @@
 
         /* Light mode styling */
         .light-mode {
-            background: white;
-            color: black;
+            background: #f4f4f4;
+            color: #333;
         }
         .light-mode textarea {
-            background: #f4f4f4;
-            color: black;
+            background: #ffffff;
+            color: #333;
+        }
+        .light-mode h1 {
+            color: #333;
+        }
+        .light-mode #saveButton {
+            background-color: #007bff;
+            color: white;
+        }
+        .light-mode #saveButton:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
