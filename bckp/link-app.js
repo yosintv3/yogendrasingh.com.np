@@ -10,26 +10,14 @@ const jsonFile = fileParam ? `${fileParam}.json` : 'default.json'; // Default to
 
 const container = document.getElementById('live-container');
 
-// Show countdown message function
-const countdownDiv = document.createElement('div');
-countdownDiv.className = 'error-message'; // Apply same style as the error message
-countdownDiv.innerHTML = "Live Links Loading in 6 sec...";
-container.appendChild(countdownDiv);
+// Show loading message
+const loadingDiv = document.createElement('div');
+loadingDiv.className = 'loading-message';
+loadingDiv.innerHTML = "Live Links Loading...";
+container.appendChild(loadingDiv);
 
-// Countdown function starts from here 
-let countdown = 6;
-const countdownInterval = setInterval(() => {
-  countdown--;
-  countdownDiv.innerHTML = `Live Links Loading in ${countdown} sec...`;
-  
-  if (countdown === 0) {
-    clearInterval(countdownInterval);
-    loadLiveLinks(); // Call the function to fetch and display links
-  }
-}, 1000);
-
-// Function to fetch JSON and display events
-function loadLiveLinks() {
+// Fetch JSON after 5 seconds
+setTimeout(() => {
   fetch(jsonFile)
     .then(response => {
       if (!response.ok) {
@@ -38,7 +26,7 @@ function loadLiveLinks() {
       return response.json();
     })
     .then(data => {
-      container.innerHTML = ''; // Clear countdown message
+      container.innerHTML = ''; // Clear loading message
 
       // Loop through each event and create a link
       data.events.forEach(event => {
@@ -63,10 +51,10 @@ function loadLiveLinks() {
       console.error('Error fetching JSON:', error);
 
       // Display the fallback message if there's an error
-      container.innerHTML = ''; // Clear countdown message
+      container.innerHTML = ''; // Clear loading message
       const errorMessageDiv = document.createElement('div');
       errorMessageDiv.className = 'error-message';
       errorMessageDiv.innerHTML = "Please Check Later, Match Not Started!";
       container.appendChild(errorMessageDiv);
     });
-}
+}, 5000); // 5-second delay
